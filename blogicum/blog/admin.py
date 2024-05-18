@@ -13,6 +13,7 @@ class PostInline(admin.StackedInline):
 
 class LocationAdmin(admin.ModelAdmin):
     """Переопределяем настройки интерфейса админки для модели локаций."""
+
     inlines = (
         PostInline,
     )
@@ -20,6 +21,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     """Переопределяем настройки интерфейса админки для модели категорий."""
+
     inlines = (
         PostInline,
     )
@@ -27,6 +29,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     """Переопределяем настройки интерфейса админки для модели постов."""
+
     list_display = (
         'title',
         'text',
