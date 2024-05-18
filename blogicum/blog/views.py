@@ -83,6 +83,7 @@ def category_posts(request, category_slug):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     """Создание поста"""
+
     model = Post
     form_class = PostForm
     template_name = 'blog/create.html'
@@ -101,6 +102,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     """Редактирование поста"""
+
     model = Post
     form_class = PostForm
     template_name = 'blog/create.html'
@@ -121,6 +123,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление поста"""
+
     model = Post
     form_class = PostForm
     template_name = 'blog/create.html'
@@ -136,6 +139,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     """Создание комментария"""
+
     model = Comment
     form_class = CommentForm
     template_name = 'blog/comments.html'
@@ -156,6 +160,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
     """Редактирования комментария"""
+
     model = Comment
     form_class = CommentForm
     template_name = 'blog/comment.html'
@@ -176,6 +181,7 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
 
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление комментария"""
+
     model = Comment
     form_class = CommentForm
     template_name = 'blog/comment.html'
@@ -210,6 +216,7 @@ def profile_detail(request, username):
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     """Редактирование профиля пользователя"""
+
     model = User
     fields = ('username', 'first_name', 'last_name', 'email')
     template_name = 'blog/user.html'
@@ -220,3 +227,4 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self) -> str:
         return reverse_lazy('blog:profile',
                             kwargs={'username': self.object.username})
+
