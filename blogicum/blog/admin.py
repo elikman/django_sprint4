@@ -9,7 +9,7 @@ class PostInline(admin.StackedInline):
     """Задаем отображение записей в админзоне столбом."""
     model = Post
     extra = 0
-
+    
 
 class LocationAdmin(admin.ModelAdmin):
     """Переопределяем настройки интерфейса админки для модели локаций."""
