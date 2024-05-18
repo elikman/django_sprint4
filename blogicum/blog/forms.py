@@ -1,32 +1,26 @@
 from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
 
-from .models import Comment, Post
-
-User = get_user_model()
-
-
-class CustomUserCreationForm(UserCreationForm):
-    """Переопределяем модель пользователя и поля модели."""
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+from .models import Post, User, Comment
 
 
 class PostForm(forms.ModelForm):
-    """Форма для модели постов."""
     class Meta:
         model = Post
         exclude = ('author',)
         widgets = {
-            'pub_date': forms.DateTimeInput(attrs={'type': 'datetime-local',
-                                                   'class': 'form-control'})
+            'pub_date': forms.DateTimeInput(
+                format='%Y-%m-%d %H:%M', attrs={'type': 'datetime-local'}
+            )
         }
 
 
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
+
+
 class CommentForm(forms.ModelForm):
-    """Форма для модели комментариев."""
     class Meta:
         model = Comment
         fields = ('text',)
