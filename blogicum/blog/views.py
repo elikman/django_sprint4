@@ -227,4 +227,3 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self) -> str:
         return reverse_lazy('blog:profile',
                             kwargs={'username': self.object.username})
-
