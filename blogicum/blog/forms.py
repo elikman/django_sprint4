@@ -9,6 +9,7 @@ User = get_user_model()
 
 class CustomUserCreationForm(UserCreationForm):
     """Переопределяем модель пользователя и поля модели."""
+
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
@@ -16,6 +17,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 class PostForm(forms.ModelForm):
     """Форма для модели постов."""
+
     class Meta:
         model = Post
         exclude = ('author',)
@@ -27,6 +29,7 @@ class PostForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     """Форма для модели комментариев."""
+
     class Meta:
         model = Comment
         fields = ('text',)
