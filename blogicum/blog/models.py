@@ -6,6 +6,7 @@ User = get_user_model()
 
 class BaseModel(models.Model):
     """Базовая модель."""
+
     is_published = models.BooleanField(
         default=True,
         verbose_name='Опубликовано',
@@ -22,6 +23,7 @@ class BaseModel(models.Model):
 
 class Location(BaseModel):
     """Модель местоположенний."""
+
     name = models.CharField(max_length=256, verbose_name='Название места')
 
     class Meta:
@@ -34,6 +36,7 @@ class Location(BaseModel):
 
 class Category(BaseModel):
     """Модель категорий."""
+
     title = models.CharField(max_length=256, verbose_name='Заголовок')
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
@@ -55,6 +58,7 @@ class Category(BaseModel):
 
 class Post(BaseModel):
     """Модель постов."""
+
     title = models.CharField(max_length=256, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
@@ -97,6 +101,7 @@ class Post(BaseModel):
 
 class Profile(models.Model):
     """Модель профиля."""
+
     user = models.OneToOneField(
         User,
         null=True,
@@ -110,6 +115,7 @@ class Profile(models.Model):
 
 class Comment(models.Model):
     """Модель комментариев."""
+
     text = models.TextField('Текст комментария')
     post = models.ForeignKey(
         Post,
@@ -121,3 +127,4 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ('created_at',)
+
