@@ -91,6 +91,7 @@ class Post(TimestampedMode):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
+        default_related_name = 'posts'
 
     def __str__(self) -> str:
         return self.title[:MAX_LENGTH]
@@ -110,7 +111,7 @@ class Comment(TimestampedMode):
         Post,
         on_delete=models.CASCADE,
         verbose_name='Комментарий',
-        related_name='post_comments'
+        related_name='comments'
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
