@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from core.models import PublishedModel
+from core.models import TimestampedMode
 
 User = get_user_model()
+MAX_LENGTH = 20
 
 
-class Location(PublishedModel):
+class Location(TimestampedMode):
     """Местоположение"""
 
     name = models.CharField(
@@ -19,10 +20,10 @@ class Location(PublishedModel):
         verbose_name_plural = 'Местоположения'
 
     def __str__(self) -> str:
-        return self.name[:20]
+        return self.name[:MAX_LENGTH]
 
 
-class Category(PublishedModel):
+class Category(TimestampedMode):
     """Категория"""
 
     title = models.CharField(
@@ -43,10 +44,10 @@ class Category(PublishedModel):
         verbose_name_plural = 'Категории'
 
     def __str__(self) -> str:
-        return self.title[:20]
+        return self.title[:MAX_LENGTH]
 
 
-class Post(PublishedModel):
+class Post(TimestampedMode):
     """Публикация"""
 
     title = models.CharField(
@@ -92,10 +93,10 @@ class Post(PublishedModel):
         verbose_name_plural = 'Публикации'
 
     def __str__(self) -> str:
-        return self.title[:20]
+        return self.title[:MAX_LENGTH]
 
 
-class Comment(PublishedModel):
+class Comment(TimestampedMode):
     """Комментарий"""
 
     text = models.TextField(verbose_name='Текст')
@@ -103,13 +104,13 @@ class Comment(PublishedModel):
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор',
-        related_name='comments'
+        related_name='user_comments'
     )
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
         verbose_name='Комментарий',
-        related_name='comments'
+        related_name='post_comments'
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -122,4 +123,4 @@ class Comment(PublishedModel):
         ordering = ('created_at',)
 
     def __str__(self) -> str:
-        return self.text[:20]
+        return self.text[:MAX_LENGTH]

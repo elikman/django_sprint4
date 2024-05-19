@@ -8,6 +8,9 @@ from .models import Post, Category, Comment, User
 from .forms import PostForm, ProfileEditForm, CommentForm
 
 
+POST_SORT_CRITERIA = '-pub_date'
+
+
 def get_posts(post_objects):
     """Посты из БД"""
     return post_objects.filter(
@@ -27,7 +30,7 @@ def get_paginator(request, items, num=10):
 def index(request):
     """Главная страница"""
     template = 'blog/index.html'
-    post_list = get_posts(Post.objects).order_by('-pub_date')
+    post_list = get_posts(Post.objects).order_by(POST_SORT_CRITERIA)
     page_obj = get_paginator(request, post_list)
     context = {'page_obj': page_obj}
     return render(request, template, context)
@@ -60,15 +63,12 @@ def category_posts(request, category_slug):
 def create_post(request):
     """Создает новую запись"""
     template = 'blog/create.html'
-    if request.method == 'POST':
-        form = PostForm(request.POST or None, files=request.FILES or None)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('blog:profile', request.user)
-    else:
-        form = PostForm()
+    form = PostForm(request.POST or None, files=request.FILES or None)
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect('blog:profile', request.user)
     context = {'form': form}
     return render(request, template, context)
 
@@ -91,13 +91,10 @@ def profile(request, username):
 def edit_profile(request):
     """Редактирует профиль пользователя"""
     template = 'blog/user.html'
-    if request.method == 'POST':
-        form = ProfileEditForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('blog:profile', request.user)
-    else:
-        form = ProfileEditForm(instance=request.user)
+    form = ProfileEditForm(request.POST or None, instance=request.user)
+    if form.is_valid():
+        form.save()
+        return redirect('blog:profile', request.user)
     context = {'form': form}
     return render(request, template, context)
 
@@ -109,14 +106,13 @@ def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user != post.author:
         return redirect('blog:post_detail', post_id)
-    if request.method == "POST":
-        form = PostForm(
-            request.POST, files=request.FILES or None, instance=post)
-        if form.is_valid():
-            post.save()
-            return redirect('blog:post_detail', post_id)
-    else:
-        form = PostForm(instance=post)
+
+    form = PostForm(request.POST or None, files=request.FILES or None,
+                    instance=post)
+    if form.is_valid():
+        form.save()
+        return redirect('blog:post_detail', post_id)
+
     context = {'form': form}
     return render(request, template, context)
 
@@ -142,12 +138,13 @@ def delete_post(request, post_id):
 def add_comment(request, post_id):
     """Добавляет комментарий к записи"""
     post = get_object_or_404(Post, id=post_id)
-    form = CommentForm(request.POST or None)
-    if form.is_valid():
-        comment = form.save(commit=False)
-        comment.post = post
-        comment.author = request.user
-        comment.save()
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
     return redirect('blog:post_detail', post_id)
 
 
@@ -158,13 +155,12 @@ def edit_comment(request, post_id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if request.user != comment.author:
         return redirect('blog:post_detail', post_id)
-    if request.method == "POST":
-        form = CommentForm(request.POST or None, instance=comment)
-        if form.is_valid():
-            form.save()
-            return redirect('blog:post_detail', post_id)
-    else:
-        form = CommentForm(instance=comment)
+
+    form = CommentForm(request.POST or None, instance=comment)
+    if form.is_valid():
+        form.save()
+        return redirect('blog:post_detail', post_id)
+
     context = {'form': form, 'comment': comment}
     return render(request, template, context)
 
