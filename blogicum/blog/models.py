@@ -58,7 +58,6 @@ class Post(TimestampedMode):
     image = models.ImageField(
         verbose_name='Изображение',
         upload_to='images',
-        null=True,
         blank=True
     )
     pub_date = models.DateTimeField(
