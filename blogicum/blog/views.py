@@ -80,7 +80,7 @@ def profile(request, username):
     posts_list = (
         user.posts
         .annotate(comment_count=Count('comments'))
-        .order_by('-pub_date')
+        .order_by(POST_SORT_CRITERIA)
     )
     page_obj = get_paginator(request, posts_list)
     context = {'profile': user, 'page_obj': page_obj}
